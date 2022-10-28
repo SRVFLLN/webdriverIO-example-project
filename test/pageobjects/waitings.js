@@ -1,4 +1,4 @@
-export default class Watings {
+export default class Waitings {
     static defaultTimeout = 10000;
 
     static async waitUntilPageIsLoad() {
@@ -6,19 +6,19 @@ export default class Watings {
             async () => await browser.execute(() => document.readyState === 'complete'), { timeout: this.defaultTimeout});
     }
 
-    static async waitForClickable(element, timeout) {
+    static async waitForClickable(element, timeout = null) {
         await element.waitForClickable({timeout: timeout ? timeout : this.defaultTimeout});
     }
 
-    static async waitForDisplayed(element, timeout) {
+    static async waitForDisplayed(element, timeout = null) {
         await element.waitForDisplayed({timeout: timeout ? timeout : this.defaultTimeout});
     }
 
-    static async waitForNotDisplayed(element, timeout) {
+    static async waitForNotDisplayed(element, timeout = null) {
         await element.waitForDisplayed({timeout: timeout ? timeout : this.defaultTimeout, reverse: true});
     }
 
-    static async waitForExist(element, timeout) {
+    static async waitForExist(element, timeout = null) {
         await element.waitForExist({timeout: timeout ? timeout : this.defaultTimeout})
     }
 }

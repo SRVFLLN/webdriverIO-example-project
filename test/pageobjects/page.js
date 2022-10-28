@@ -1,4 +1,4 @@
-import Watings from "./waitings";
+import Waitings from "./waitings";
 
 
 /**
@@ -19,8 +19,8 @@ export default class Page {
     }
 
     async isPageOpen(uniqElement) {
-        await Watings.waitUntilPageIsLoad();
-        await Watings.waitForDisplayed(browser.$(uniqElement));
+        await Waitings.waitUntilPageIsLoad();
+        await Waitings.waitForDisplayed(browser.$(uniqElement));
         return await browser.$(uniqElement).isDisplayed();
     }
 }

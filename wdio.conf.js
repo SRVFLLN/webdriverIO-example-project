@@ -213,8 +213,19 @@ exports.config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest: function (test, context) {
+        browser.addCommand('focus', async function () {
+            await browser.execute(function (domElement) {
+                domElement.focus();
+            }, this);
+        }, true);
+
+        browser.addCommand('blur', async function () {
+            await browser.execute((domElement) => {
+                domElement.blur();
+            }, this);
+        }, true);
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
