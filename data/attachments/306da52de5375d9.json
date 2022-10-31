@@ -1,0 +1,10 @@
+{
+  "script": "return ((domElement, value) => {\n        domElement.value = value;\n      }).apply(null, arguments)",
+  "args": [
+    {
+      "element-6066-11e4-a52e-4f735466cecf": "d9a30c34-2105-49c2-ae9a-61af622c2aed",
+      "ELEMENT": "d9a30c34-2105-49c2-ae9a-61af622c2aed"
+    },
+    "2001-04"
+  ]
+}
