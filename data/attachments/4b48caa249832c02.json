@@ -1,0 +1,10 @@
+[
+  {
+    "domain": "testpages.herokuapp.com",
+    "httpOnly": false,
+    "name": "loggedin",
+    "path": "/",
+    "secure": true,
+    "value": "Admin"
+  }
+]
