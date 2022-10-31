@@ -1,0 +1,9 @@
+{
+  "script": "return (domElement => {\n        domElement.blur();\n      }).apply(null, arguments)",
+  "args": [
+    {
+      "element-6066-11e4-a52e-4f735466cecf": "9ea3d7e0-2315-4cd0-8515-3f12e6b1cf5b",
+      "ELEMENT": "9ea3d7e0-2315-4cd0-8515-3f12e6b1cf5b"
+    }
+  ]
+}

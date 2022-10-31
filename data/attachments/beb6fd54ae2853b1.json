@@ -1,0 +1,9 @@
+{
+  "script": "return (function (domElement) {\n        domElement.focus();\n      }).apply(null, arguments)",
+  "args": [
+    {
+      "element-6066-11e4-a52e-4f735466cecf": "6b70b4b7-12c8-4f67-b76e-fa41f9746fc3",
+      "ELEMENT": "6b70b4b7-12c8-4f67-b76e-fa41f9746fc3"
+    }
+  ]
+}
