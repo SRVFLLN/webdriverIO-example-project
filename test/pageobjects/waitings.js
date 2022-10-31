@@ -1,5 +1,5 @@
 export default class Waitings {
-    static defaultTimeout = 10000;
+    static defaultTimeout = 15000;
 
     static async waitUntilPageIsLoad() {
         await browser.waitUntil(
@@ -21,4 +21,10 @@ export default class Waitings {
     static async waitForExist(element, timeout = null) {
         await element.waitForExist({timeout: timeout ? timeout : this.defaultTimeout})
     }
+
+    static async waitForAttributeValue(element, attribute, value, timeout = null) {
+        await browser.waitUntil(async () => 
+            await element.getAttribute(attribute) == value, 
+            {timeout: timeout ? timeout : this.defaultTimeout});
+    } 
 }

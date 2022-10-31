@@ -1,3 +1,27 @@
+const path = require('path');
+const fs = require('fs');
+
+global.downloadDir = path.join(__dirname, 'tempDownload');
+
+function rmdir(dir) {
+    var list = fs.readdirSync(dir);
+    for(var i = 0; i < list.length; i++) {
+      var filename = path.join(dir, list[i]);
+      var stat = fs.statSync(filename);
+  
+      if(filename == "." || filename == "..") {
+        // pass these files
+      } else if(stat.isDirectory()) {
+        // rmdir recursively
+        rmdir(filename);
+      } else {
+        // rm fiilename
+        fs.unlinkSync(filename);
+      }
+    }
+    fs.rmdirSync(dir);
+  }
+
 exports.config = {
     //
     // ====================
@@ -54,9 +78,36 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 3,
         //
         browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: ['--headless','--disable-gpu','--window-size=1920,1080'],
+            prefs: {
+                'download.default_directory': global.downloadDir
+            }
+        },
+        acceptInsecureCerts: true
+        // If outputDir is provided WebdriverIO can capture driver session logs
+        // it is possible to configure which logTypes to include/exclude.
+        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+        // excludeDriverLogs: ['bugreport', 'server'],
+    }, {
+    
+        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+        // grid with only 5 firefox instances available you can make sure that not more than
+        // 5 instances get started at a time.
+        maxInstances: 3,
+        //
+        browserName: 'firefox',
+        'moz:firefoxOptions': {
+            args: ['--headless'],
+            prefs: {
+                'browser.download.dir': global.downloadDir,
+                'browser.download.manager.showWhenStarting': false,
+                'browser.helperApps.neverAsk.saveToDisk': "text/html, application/xhtml+xml, application/xml, application/csv, text/plain, application/vnd.ms-excel, text/csv, text/comma-separated-values, application/octet-stream"
+            }
+        },
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -156,8 +207,12 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+     onPrepare: function (config, capabilities) {
+        if (!fs.existsSync(downloadDir)){
+            // if it doesn't exist, create it
+            fs.mkdirSync(downloadDir);
+        }
+     },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -224,6 +279,12 @@ exports.config = {
             await browser.execute((domElement) => {
                 domElement.blur();
             }, this);
+        }, true);
+
+        browser.addCommand('fill', async function (value) {
+            await browser.execute((domElement, value) => {
+                domElement.value = value;
+            }, this, value);
         }, true);
     },
     /**
@@ -295,8 +356,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+     onComplete: function(exitCode, config, capabilities, results) {
+        rmdir(downloadDir);
+     },
     /**
     * Gets executed when a refresh happens.
     * @param {String} oldSessionId session ID of the old session
